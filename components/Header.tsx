@@ -18,7 +18,7 @@ export const Header = () => {
                         Pokedex Problem
                     </Typography>
                     <Typography component="div" sx={{ marginTop: '-0.5rem' }}>
-                        Assignment for Madverse Music
+                        {/* Assignment for Madverse Music */}
                     </Typography>
                 </div>
                 
