@@ -24,18 +24,24 @@ interface ColorModeProviderProps {
 export const ColorModeProvider: React.FC<ColorModeProviderProps> = ({ children }) => {
   const [mode, setMode] = useState<PaletteMode>('light');
 
+  // Ensure we're only using window/document on the client side
   useEffect(() => {
-    const savedMode = localStorage.getItem('colorMode') as PaletteMode | null;
-    if (savedMode) {
-      setMode(savedMode);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setMode('dark');
+    if (typeof window !== 'undefined') {
+      const savedMode = localStorage.getItem('colorMode') as PaletteMode | null;
+      if (savedMode) {
+        setMode(savedMode);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setMode('dark');
+      }
     }
   }, []);
 
+  // This effect updates the body class, also checks for window/document
   useEffect(() => {
-    document.body.classList.remove('dark', 'light');
-    document.body.classList.add(mode);
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('dark', 'light');
+      document.body.classList.add(mode);
+    }
   }, [mode]);
 
   const colorMode = React.useMemo(
